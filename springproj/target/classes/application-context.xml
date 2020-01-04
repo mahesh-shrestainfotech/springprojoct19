@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+
+	<bean id="mysqlDumbDB" class="com.mtc.app.db.MysqlDumbDB" init-method="initDumbMysqlDB"></bean>
+	
+	<bean id="dumbOracleDB" class="com.mtc.app.db.DumbOracleDB" init-method="initDumbOracleDB"></bean>
+	
+	<bean id="productDAO" class="com.mtc.app.dao.ProductDAO">
+		<property name="mysqlDumbDB" ref="mysqlDumbDB"></property>
+	</bean>
+	
+	<bean id="oracleProductDAO" class="com.mtc.app.dao.OracleProductDAO">
+		<property name="dumbOracleDB" ref="dumbOracleDB"></property>
+	</bean>
+	
+	<bean id="orderDAO" class="com.mtc.app.dao.OrderDAO">
+		<property name="mysqlDumbDB" ref="mysqlDumbDB"></property>
+	</bean>
+	
+	<bean id="orderService" class="com.mtc.app.service.OrderService">
+		<!-- <property name="productDAO" ref="productDAO"></property> -->
+		<constructor-arg ref="productDAO"></constructor-arg>
+		<constructor-arg ref="orderDAO"></constructor-arg>
+		<!-- <property name="orderDAO" ref="orderDAO"></property> -->
+	</bean>
+	
+
+</beans>
